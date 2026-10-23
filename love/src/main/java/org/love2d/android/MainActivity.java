@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** این تابع در onCreate/onResume/onStart برای بروزرسانی قفل‌ها و ستاره‌ها صدا زده می‌شود */
     public void init_seasons_state() {
-        File directory = new File(baseDir(this), "save" + File.separator + "archive" + File.separator + "save");
+        File directory = new File(SplashActivity.baseDir(this), "save" + File.separator + "archive" + File.separator + "save");
         //noinspection ResultOfMethodCallIgnored
         directory.mkdirs();
 
@@ -373,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** بررسی قفل بودن اپیزود از روی فایل ذخیره (منطق اصلی حفظ شده) */
     public boolean episode_isNotLocked(String FileName) {
-        File file = new File(baseDir(this), "save" + File.separator + "archive" + File.separator + FileName);
+        File file = new File(SplashActivity.baseDir(this), "save" + File.separator + "archive" + File.separator + FileName);
         if (file.exists()) {
             try {
                 BufferedReader brTest = new BufferedReader(new FileReader(file));
@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             int stars = 0;
             long time = 0;
-            File file = new File(baseDir(this), "save" + File.separator + "archive" + File.separator + FileName);
+            File file = new File(SplashActivity.baseDir(this), "save" + File.separator + "archive" + File.separator + FileName);
             if (file.exists()) {
                 FileInputStream is = new FileInputStream(file);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ==================================================================== پیام خوش‌آمدگویی با نام کاربر
     public void take_username_and_show_wellcome_message_if_already_exist() {
-        final String storagePath = baseDir(this);
+        final String storagePath = SplashActivity.baseDir(this);
         File file = new File(storagePath, "username.txt");
         if (file.exists()) {
             try {
@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void show_wellcome_message_if_should_and_change_its_state() {
-        File file = new File(baseDir(this), "save" + File.separator + "archive" + File.separator + "wellcome_state.txt");
+        File file = new File(SplashActivity.baseDir(this), "save" + File.separator + "archive" + File.separator + "wellcome_state.txt");
         if (file.exists()) {
             try {
                 BufferedReader brTest = new BufferedReader(new FileReader(file));
