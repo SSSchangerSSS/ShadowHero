@@ -1,6 +1,13 @@
 # گزارش تعمیر و پایدارسازی — قهرمان سایه‌ای (ShadowHero)
 
-تاریخ: 2026-10-23 | شاخه کاری: `fix/p0-crash` | نقطه شروع: `68d282f` (master)
+تاریخ: 2026-10-23 | شاخه کاری: `fix/p0-crash` | نقطه شروع: `68d282f` (master) | سرنخ نهایی: `74e314a`
+
+**کامیت‌ها (به ترتیب):**
+- `b1d0e48` — فیکس‌های P0/P1 + تست‌ها + اسکریپت‌ها + CI (شامل ۵۰۶۶ تغییر mode ناخواسته از cp -a)
+- `cae5e1f` — نرمال‌سازی modeها (بدون تغییر محتوا؛ فقط gradlew و scripts/*.sh اجرایی ماندند)
+- `fa3b05b` — trigger CI برای شاخه‌های fix/**
+- `eb05ebc` — فیکس کامپایل (ViewGroup.LayoutParams)
+- `74e314a` — همگام‌سازی whitelist اپیزودها با کد واقعی (گرفته‌شده توسط تست واحد)
 
 ---
 
@@ -75,10 +82,13 @@
 | صحت بسته game.love (بوت در ریشه، resolve شدن ۱۱۲ require، ۱۲۵۸ منبع) | `python3 scripts/verify_love_package.py <game.love> main` | `game.love package integrity: OK` (۲ false positive اولیه مربوط به کد کامنت‌شده بود و اسکریپت اصلاح شد) |
 | فراخوانی‌های save/unlock در Lua | ردیابی استاتیک | همه‌ی callers پوشش داده شدند (`level.name` = `s1e1` …) |
 
-### اجراشده در CI (GitHub Actions، بدون انتشار) ✅/⏳
-- `./gradlew :love:testNormalReleaseUnitTest` — تست‌های JVM قرارداد SavePaths (۷ تست: مسیرها، فرمت chooser، اعتبارسنجی شناسه، اتمیک بودن، رد traversal، مهاجرت از ریشه و از unnamed)
-- `./gradlew assembleNormalRelease` — بیلد واقعی APK
-- نتیجه: پس از پوش شاخه، ران «build-test» لینک داده می‌شود؛ این گزارش با وضعیت نهایی ران به‌روز می‌شود.
+### اجراشده در CI (GitHub Actions، بدون انتشار) ✅ — ران 39982592733، همه سبز
+- `Verify game.love package integrity` ✅ — همان تست محلی روی runner
+- `Lua syntax check (LuaJIT)` ✅ — ۴۷ فایل با luajit نصب‌شده روی runner
+- `JVM unit tests (:love:testNormalReleaseUnitTest)` ✅ — ۸ تست قرارداد SavePaths
+  - نکته: تست‌ها **یک باگ واقعی را هم گرفتند** — whitelist اولیه `s[1-4]e[1-3]` بود در حالی که فصل ۳/۴ در level_chooser کامنت‌اند؛ اصلاح شد تا با کد واقعی همگام بماند
+- `assembleNormalRelease` ✅ — بیلد کامل APK (artifact: `shadowhero-test-apk`، unsigned)
+- لینک ران: https://github.com/SSSchangerSSS/ShadowHero/actions/runs/39982592733
 
 ### اجرانشده (صریحاً ثبت می‌شود) ❌
 - نصب تمیز روی دستگاه، ۲۰ چرخه شروع/بازگشت، چندلمسی، توقف/ادامه، برد/باخت، بازگشت پس از kill فرایند، نسبت‌های ۱۸:۹/۲۰:۹ — **دستگاه/شبیه‌ساز اندروید در این محیط موجود نیست.** ادعای «بدون کرش» به این سناریوها تعمیم داده نمی‌شود.
