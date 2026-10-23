@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace 'org.love2d.android.executable'
+    compileSdk 34
+    ndkVersion '26.1.10909125'
+    defaultConfig {
+        applicationId 'com.SandSprogrammingGroup.RealShadowHero'
+        versionCode 5
+        versionName '1.2.0'
+        // Android 8.0 (API 26) تا Android 15 (API 35) پشتیبانی می‌شود
+        minSdk 26
+        targetSdk 34
+    }
+    signingConfigs {
+        ciRelease {
+            // برای بیلد CI: متغیرهای محیطی SIGNING_* تنظیم می‌شوند
+            def storePath = System.getenv('SIGNING_STORE_PATH')
+            if (storePath != null && !storePath.isEmpty()) {
+                storeFile file(storePath)
+                storePassword System.getenv('SIGNING_STORE_PASSWORD')
+                keyAlias System.getenv('SIGNING_KEY_ALIAS')
+                keyPassword System.getenv('SIGNING_KEY_PASSWORD')
+            }
+        }
+    }
+    buildTypes {
+        release {
+            // minify غیرفعال برای سازگاری کامل JNI/LÖVE در R8 full-mode
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            def storePath = System.getenv('SIGNING_STORE_PATH')
+            if (storePath != null && !storePath.isEmpty()) {
+                signingConfig signingConfigs.ciRelease
+            }
+        }
+    }
+    flavorDimensions 'mode'
+    productFlavors {
+        normal {
+            dimension 'mode'
+        }
+        playstore {
+            dimension 'mode'
+        }
+        embed {
+            dimension 'mode'
+            applicationIdSuffix '.embed'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    lint {
+        abortOnError false
+    }
+}
+
+dependencies {
+    api 'androidx.appcompat:appcompat:1.6.1'
+    api 'com.google.android.material:material:1.12.0'
+    api 'androidx.constraintlayout:constraintlayout:2.1.4'
+    api 'androidx.core:core-splashscreen:1.0.1'
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api project(':love')
+}

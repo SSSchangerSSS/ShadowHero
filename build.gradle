@@ -1,0 +1,28 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // AGP 8.1.1: compileSdk 34 / targetSdk 34 (Android 15) / minSdk 26 (Android 8) - requires Gradle 8.x + JDK 17
+        classpath 'com.android.tools.build:gradle:8.1.1'
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+repositories {
+    google()
+    mavenCentral()
+}

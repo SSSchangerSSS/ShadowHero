@@ -1,0 +1,87 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'org.love2d.android'
+    compileSdk 34
+    ndkVersion '26.1.10909125'
+
+    defaultConfig {
+        minSdk 26
+        resValue 'bool', 'embed', 'false'
+        externalNativeBuild {
+            ndkBuild {
+                arguments "-j" + Runtime.runtime.availableProcessors()
+            }
+        }
+        ndk {
+            // Specifies the ABI configurations of your native
+            // libraries Gradle should build and package with your APK.
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+            debugSymbolLevel 'SYMBOL_TABLE'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            ndk {
+                abiFilters += 'x86_64'
+            }
+        }
+    }
+    flavorDimensions 'mode'
+    productFlavors {
+        normal {
+            dimension 'mode'
+        }
+        playstore {
+            dimension 'mode'
+        }
+        embed {
+            dimension 'mode'
+            resValue 'bool', 'embed', 'true'
+        }
+    }
+    sourceSets {
+        main {
+            java {
+                srcDir 'src/jni/SDL2/android-project/app/src/main/java'
+                srcDir 'src/main/java'
+            }
+        }
+        playstore {
+            java {
+                srcDir 'src/normal/java'
+            }
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/jni/Android.mk'
+        }
+    }
+    lint {
+        abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/LICENSE.txt', 'META-INF/NOTICE.txt']
+        }
+        jniLibs {
+            // حذف SDL2 تکراری که به صورت دستی هم لینک می‌شود
+            excludes += ['lib/arm64-v8a/libSDL2.so', 'lib/armeabi-v7a/libSDL2.so']
+        }
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api 'androidx.appcompat:appcompat:1.6.1'
+    api 'com.google.android.material:material:1.12.0'
+}

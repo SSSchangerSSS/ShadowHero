@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relative"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- پس‌زمینه هنری بازی (با فید بین منوها) -->
+    <ImageView
+        android:id="@+id/allback_images"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/b_menu"
+        android:contentDescription="@string/app_logo_desc" />
+
+    <!-- اسکریم تیره برای خوانایی دکمه‌های Material -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/scrim_menu" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="18dp"
+            android:paddingBottom="24dp">
+
+            <!-- هدر: لوگو + عنوان -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    app:cardBackgroundColor="@color/sh_primary_container"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="6dp"
+                    app:strokeWidth="0dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/main_logo"
+                        android:contentDescription="@string/app_logo_desc" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="قهرمان سایه ای"
+                        android:textColor="@color/sh_on_background"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SandS Programming Group"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ================= منوی اصلی ================= -->
+            <LinearLayout
+                android:id="@+id/base_menu"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_the_game_button"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="start"
+                    android:text="شروع بازی"
+                    app:icon="@drawable/ic_play" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/training"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="trainSome"
+                    android:text="آموزشی"
+                    app:icon="@drawable/ic_school" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/game_page"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="goToPage"
+                    android:text="صفحه بازی"
+                    app:icon="@drawable/ic_shop" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/comments"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="commenting"
+                    android:text="نظر دهی"
+                    app:icon="@drawable/ic_rate" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/send_email"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="sendingEmail"
+                    android:text="ایمیل مستقیم به ما"
+                    app:icon="@drawable/ic_email" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/group_games_page"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="goToGamesPage"
+                    android:text="بازی های دیگر ما"
+                    app:icon="@drawable/ic_apps" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/exit_button"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="exit_game"
+                    android:text="خروج"
+                    app:backgroundTint="@color/sh_tertiary_container"
+                    app:icon="@drawable/ic_exit"
+                    app:iconTint="@color/sh_on_tertiary_container"
+                    app:rippleColor="@color/sh_on_tertiary_container" />
+            </LinearLayout>
+
+            <!-- ================= منوی فصل‌ها ================= -->
+            <LinearLayout
+                android:id="@+id/seasons_menu"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/BackToBase"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="back_to_base"
+                    android:text="بازگشت"
+                    app:backgroundTint="@android:color/transparent"
+                    app:icon="@drawable/ic_arrow_back"
+                    app:strokeColor="@color/sh_outline"
+                    app:strokeWidth="1dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sOne"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="Season_ONE"
+                    android:text="فصل اول" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sTwo"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="Season_TWO"
+                    android:text="فصل دوم"
+                    app:icon="@drawable/ic_lock" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sThree"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="Season_THREE"
+                    android:text="فصل سوم"
+                    app:icon="@drawable/ic_lock" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sFour"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="Season_FOUR"
+                    android:text="فصل چهارم"
+                    app:icon="@drawable/ic_lock" />
+            </LinearLayout>
+
+            <!-- ================= فصل اول ================= -->
+            <LinearLayout
+                android:id="@+id/season_one_menu"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/BackToSeasonsFromOne"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="back_to_seasons_From_one"
+                    android:text="بازگشت به فصل‌ها"
+                    app:backgroundTint="@android:color/transparent"
+                    app:icon="@drawable/ic_arrow_back"
+                    app:strokeColor="@color/sh_outline"
+                    app:strokeWidth="1dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sOneEone"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_One_E1"
+                        android:text="اپیزود ۱" />
+
+                    <TextView
+                        android:id="@+id/sOneEoneStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sOneEtwo"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_One_E2"
+                        android:text="اپیزود ۲"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sOneEtwoStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sOneEthree"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_One_E3"
+                        android:text="اپیزود ۳"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sOneEthreeStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ================= فصل دوم ================= -->
+            <LinearLayout
+                android:id="@+id/season_two_menu"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/BackToSeasonsFromTwo"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="back_to_seasons_From_two"
+                    android:text="بازگشت به فصل‌ها"
+                    app:backgroundTint="@android:color/transparent"
+                    app:icon="@drawable/ic_arrow_back"
+                    app:strokeColor="@color/sh_outline"
+                    app:strokeWidth="1dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sTwoEone"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_Two_E1"
+                        android:text="اپیزود ۱"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sTwoEoneStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sTwoEtwo"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_Two_E2"
+                        android:text="اپیزود ۲"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sTwoEtwoStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sTwoEthree"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_Two_E3"
+                        android:text="اپیزود ۳"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sTwoEthreeStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ================= فصل سوم ================= -->
+            <LinearLayout
+                android:id="@+id/season_three_menu"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/BackToSeasonsFromThree"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="back_to_seasons_From_three"
+                    android:text="بازگشت به فصل‌ها"
+                    app:backgroundTint="@android:color/transparent"
+                    app:icon="@drawable/ic_arrow_back"
+                    app:strokeColor="@color/sh_outline"
+                    app:strokeWidth="1dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sThreeEone"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_Three_E1"
+                        android:text="اپیزود ۱"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sThreeEoneStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sThreeEtwo"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_Three_E2"
+                        android:text="اپیزود ۲"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sThreeEtwoStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sThreeEthree"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_Three_E3"
+                        android:text="اپیزود ۳"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sThreeEthreeStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ================= فصل چهارم ================= -->
+            <LinearLayout
+                android:id="@+id/season_four_menu"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/BackToSeasonsFromFour"
+                    style="@style/ShadowHero.MenuButton"
+                    android:onClick="back_to_seasons_From_four"
+                    android:text="بازگشت به فصل‌ها"
+                    app:backgroundTint="@android:color/transparent"
+                    app:icon="@drawable/ic_arrow_back"
+                    app:strokeColor="@color/sh_outline"
+                    app:strokeWidth="1dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sFourEone"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_Four_E1"
+                        android:text="اپیزود ۱"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sFourEoneStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sFourEtwo"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_Four_E2"
+                        android:text="اپیزود ۲"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sFourEtwoStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sFourEthree"
+                        style="@style/ShadowHero.EpisodeButton"
+                        android:layout_weight="1"
+                        android:onClick="Season_Four_E3"
+                        android:text="اپیزود ۳"
+                        app:icon="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/sFourEthreeStars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:minWidth="96dp"
+                        android:text="00:00:00"
+                        android:textColor="@color/sh_on_surface_variant"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/star_zero" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
