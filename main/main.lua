@@ -81,7 +81,7 @@ menu = new_button_in_GAME_GUI((main_scaler.width * main_scaler.scale_x) - ((main
 --overriding the onclick functions of buttons just like android!!!
 pause_play.onclick = function(level)
 if pause_play.isReleased() then
-   if pause_play.get_img() == play_img then	
+   if pause_play.get_img() == play_img then     
     pause_play.set_img(pause_img)
     --resume the game
     resume_all_sounds()
@@ -91,7 +91,7 @@ if pause_play.isReleased() then
     --pause the game
     pause_all_sounds()
     game_controller.set_pause(true)
-   end	
+   end  
 pause_play.setReleased(false)
 end
 end
@@ -105,7 +105,7 @@ end
 -------------------------------------------------------------------
 music_on_off.onclick = function(level)
 if music_on_off.isReleased() then
-   if music_on_off.get_img() == music_on_img then	
+   if music_on_off.get_img() == music_on_img then       
     music_on_off.set_img(music_off_img)
     --mute the game
     should_mute = true
@@ -126,14 +126,14 @@ if music_on_off.isReleased() then
    newData[1] = 1
    success1 = jupiter.save(newData)
 
-   end	
+   end  
 music_on_off.setReleased(false)
 end
 end
 -------------------------------------------------------------------
 menu.onclick = function()
 if menu.isReleased() then
-love.event.quit()	
+love.event.quit()       
 menu.setReleased(false)
 end
 end
@@ -170,7 +170,7 @@ stars = 3
 elseif scoore < level.three_star_scoore_needs and scoore >= level.two_star_scoore_needs then
 stars_0_1_2_3 = love.graphics.newImage("ART/GUI/star_2.png")
 stars = 2
-else	
+else    
 stars_0_1_2_3 = love.graphics.newImage("ART/GUI/star_1.png")
 stars = 1
 end
@@ -230,7 +230,7 @@ end
 -------------------------------------------------------------------
 menu_score_menu.onclick = function()
 if menu_score_menu.isReleased() then
-love.event.quit()	
+love.event.quit()       
 menu_score_menu.setReleased(false)
 end
 end
@@ -255,7 +255,7 @@ else
 start_ys = end_ys
 menu_score_menu.setY(start_ys.menu)
 restart_score_menu.setY(start_ys.restart)
-end	
+end     
 end
 
 
@@ -338,11 +338,11 @@ if level.initial == true and level.loading_and_setting == false then
 pause_play.onclick()
 restart.onclick()
 music_on_off.onclick()
-menu.onclick()	
+menu.onclick()  
 
 if should_mute then
 mute_all_sounds()
-end	
+end     
 
 
 if game_controller.get_pause() == false then
@@ -380,19 +380,19 @@ level.get_world().update_beings(--[[1]]dt , --[[2]]level.get_world().get_hero().
 local bool = (one_analog_controller.attack_button.isholding() == true )--or thief_button.isholding() == true or --released_button.isholding() == true) --or dodge_button.isholding() == true)
 
 level.get_world().update_hero(--[[1]]dt 
-	, --[[2]]one_analog_controller.analog1.analog_idle() 
-	, --[[3]]one_analog_controller.thief_button.isholding() 
-	, --[[4]]one_analog_controller.released_button.isholding() 
-	, --[[5]]one_analog_controller.attack_button.isholding() 
-	, --[[6]]one_analog_controller.analog1.get_x_move() 
-	, --[[7]]one_analog_controller.analog1.get_y_move() 
-	, --[[8]]one_analog_controller.dodge_button.isholding() 
-	, --[[9]]one_analog_controller.analog1.analog_to_right() 
-	, --[[10]]one_analog_controller.analog1.analog_to_left() 
-	, --[[11]]one_analog_controller.analog1.analog_last_move()  
-	, --[[12]]bool
-	, --[[13]]level.get_world().get_all_beings() 
-	, --[[14]]level.get_world().get_nearest_being_of_hero_rectangle() 
+        , --[[2]]one_analog_controller.analog1.analog_idle() 
+        , --[[3]]one_analog_controller.thief_button.isholding() 
+        , --[[4]]one_analog_controller.released_button.isholding() 
+        , --[[5]]one_analog_controller.attack_button.isholding() 
+        , --[[6]]one_analog_controller.analog1.get_x_move() 
+        , --[[7]]one_analog_controller.analog1.get_y_move() 
+        , --[[8]]one_analog_controller.dodge_button.isholding() 
+        , --[[9]]one_analog_controller.analog1.analog_to_right() 
+        , --[[10]]one_analog_controller.analog1.analog_to_left() 
+        , --[[11]]one_analog_controller.analog1.analog_last_move()  
+        , --[[12]]bool
+        , --[[13]]level.get_world().get_all_beings() 
+        , --[[14]]level.get_world().get_nearest_being_of_hero_rectangle() 
   , --[[15]]level.transitioning)
 
 
@@ -412,7 +412,7 @@ else--if game was over (player wins or lose the episode)
 
 if should_mute then
 mute_all_sounds()
-end	
+end     
 
 if player_has_won == true then
 win_lose_sound = win_sound
@@ -435,7 +435,7 @@ end
 
 end--if level.get_end_of_level() == false then
 
-end--end of function	
+end--end of function    
 
 
 
@@ -458,7 +458,7 @@ end
 else
 if level.loading_and_setting == false then
 if level.get_world().get_hero().respawn == true then
-if start_ys == end_ys then	
+if start_ys == end_ys then      
 restart_score_menu.pressed(id, x , y)
 menu_score_menu.pressed(id, x , y)
 end
@@ -485,7 +485,7 @@ end
 else
 if level.loading_and_setting == false then
 if level.get_world().get_hero().respawn == true then
-if start_ys == end_ys then	
+if start_ys == end_ys then      
 restart_score_menu.released(id, x , y)
 menu_score_menu.released(id, x , y)
 end
@@ -559,7 +559,7 @@ end
 else
 if level.loading_and_setting == false then
 if level.get_world().get_hero().respawn == true then
-if start_ys == end_ys then	
+if start_ys == end_ys then      
 restart_score_menu.released(id, x , y)
 menu_score_menu.released(id, x , y)
 end
@@ -747,6 +747,7 @@ end
 
 
 function save_best_score_for_episode(file_name,scoore,stars,time)
+-- ریشه ذخیره با t.identity="archive" پین شده؛ نام‌ها نسبت به همان ریشه‌اند (قرارداد مشترک با Java)
 if not love.filesystem.exists(file_name.."_save.txt") then
 jupiter = require "jupiter"
 newData = {}
@@ -758,7 +759,11 @@ success = jupiter.save(data)
 else
 jupiter = require "jupiter"
 newData = jupiter.load(file_name.."_save.txt")
-if newData[2] < stars or newData[1] < scoore or (newData[1] <= scoore and newData[3] < time) then
+-- فایل خالی/خراب/ناقص نباید مقایسه و ذخیره بعدی را کرش کند؛ بازنویسی کامل مقادیر تازه
+if type(newData) ~= "table" or newData[1] == nil or newData[2] == nil or newData[3] == nil then
+data = {_fileName = file_name.."_save.txt", scoore, stars, time}
+success = jupiter.save(data)
+elseif newData[2] < stars or newData[1] < scoore or (newData[1] <= scoore and newData[3] < time) then
 newData[1] = scoore
 newData[2] = stars
 newData[3] = time

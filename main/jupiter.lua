@@ -3,10 +3,8 @@ local jupiter = {saveDir = "save"}
 
 jupiter.save = function(data)
         assert(type(data) == "table", "Tables must be provided to saveFile!")
-        if not love.filesystem.isDirectory(jupiter.saveDir) then assert(love.filesystem.createDirectory(jupiter.saveDir), "Unable to create save directory in " .. love.filesystem.getSaveDirectory() .. "!") end --make the save folder if required
-        file = love.filesystem.newFile(data._fileName)
-        file:open("w")
-
+        -- ساخت محتوا در حافظه؛ به این ترتیب هیچ فایل نیمه‌نوشته‌ای رها نمی‌شود
+        local lines = {}
         local function serial(table, scope)
                 scope = scope or ""
                 for k, v in pairs(table) do
@@ -14,15 +12,22 @@ jupiter.save = function(data)
                                 if type(v) == "table" then
                                         serial(v, scope .. tostring(k) .. ".")
                                 else
-                                        x = file:write(scope .. k .. "=" .. tostring(v) .. "\n") --write value
-                                        if not x then return nil end
+                                        lines[#lines + 1] = scope .. tostring(k) .. "=" .. tostring(v)
                                 end
                         end
                 end
         end
-
         serial(data)
-
+        -- ساخت پوشه والد در صورت نیاز (مثل "archive/...")؛ love.filesystem.write خودش پوشه نمی‌سازد
+        local dir = tostring(data._fileName):match("^(.*)/")
+        if dir and not love.filesystem.isDirectory(dir) then
+                assert(love.filesystem.createDirectory(dir), "Unable to create save directory in " .. love.filesystem.getSaveDirectory() .. "!")
+        end
+        -- love.filesystem.write فایل را خودش می‌بندد و نتیجه را برمی‌گرداند
+        local ok, err = love.filesystem.write(data._fileName, table.concat(lines, "\n") .. "\n")
+        if not ok then
+                return nil, err
+        end
         return true
 end
 

@@ -1,0 +1,54 @@
+name: build-test
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Java 17 (AGP 8.1.1)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      - name: Package game from main/ folder into game.love
+        run: |
+          mkdir -p app/src/main/assets/
+          cd main
+          zip -r -X ../app/src/main/assets/game.love .
+          cd ..
+
+      - name: Verify game.love package integrity
+        run: python3 scripts/verify_love_package.py app/src/main/assets/game.love main
+
+      - name: Lua syntax check (LuaJIT)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq luajit
+          ./scripts/check_lua_syntax.sh main
+
+      - name: JVM unit tests (love module — SavePaths contract)
+        run: ./gradlew :love:testNormalReleaseUnitTest --no-daemon --stacktrace
+
+      - name: Build unsigned release APK (no publishing)
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleNormalRelease --no-daemon --stacktrace
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: shadowhero-test-apk
+          path: app/build/outputs/apk/normal/release/*.apk
+          if-no-files-found: error

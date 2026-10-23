@@ -281,31 +281,28 @@ public class GameActivity extends SDLActivity {
     }
 
     @Override
-public void onBackPressed() {
-    
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-builder.setTitle("!یک پیام سایه ای از سیستم!");
-builder.setMessage("آیا می خواهید به منوی اصلی بازی بروید؟");
-//builder.setIcon(R.drawable.ic_launcher);
-builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-    public void onClick(DialogInterface dialog, int id) {
-        dialog.dismiss();
-       // chronometer.stop();    // stop chronometer here
-   Intent Myintent = new Intent(GameActivity.this, MainActivity.class);
-   startActivity(Myintent);
-        
+    public void onBackPressed() {
+        if (isFinishing() || isDestroyed()) {
+            super.onBackPressed();
+            return;
+        }
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.shadow_message_title)
+                .setMessage(R.string.back_to_menu_question)
+                .setPositiveButton(R.string.yes, (dialog, id) -> {
+                    dialog.dismiss();
+                    // CLEAR_TOP + SINGLE_TOP: همیشه همان منوی موجود reuse می‌شود؛
+                    // چند نمونه MainActivity روی استک ساخته نمی‌شود.
+                    Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    // خاموشی تمیز موتور؛ ورود بعدی یک نشست تازه و تک‌نشست تضمین می‌شود
+                    finish();
+                })
+                .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss())
+                .show();
     }
-});
-builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-    public void onClick(DialogInterface dialog, int id) {
-        dialog.dismiss();
-    }
-});
-//AlertDialog alert = builder.create();
-//alert.show();
-  builder.show();  
-
-}
     
     
     @Override

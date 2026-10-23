@@ -2,4 +2,18 @@
 <resources>
     <string name="app_logo_desc">آیکون بازی قهرمان سایه ای</string>
     <string name="app_name">قهرمان سایه ای</string>
+
+    <!-- gotoLevel -->
+    <string name="preparing_level">در حال آماده‌سازی مرحله… لطفاً شکیبا باشید</string>
+    <string name="level_already_preparing">لطفاً صبر کنید؛ مرحله قبلی در حال آماده‌سازی است!</string>
+    <string name="level_start_failed_title">خطا در اجرای مرحله</string>
+    <string name="level_start_failed_message">نوشتن اطلاعات مرحله ممکن نشد. فضای ذخیره‌سازی دستگاه را بررسی کنید و دوباره تلاش کنید.</string>
+    <string name="retry">تلاش دوباره</string>
+    <string name="back">بازگشت</string>
+
+    <!-- GameActivity بازگشت به منو -->
+    <string name="shadow_message_title">!یک پیام سایه‌ای از سیستم!</string>
+    <string name="back_to_menu_question">آیا می‌خواهید به منوی اصلی بازی بروید؟</string>
+    <string name="yes">بله</string>
+    <string name="no">خیر</string>
 </resources>

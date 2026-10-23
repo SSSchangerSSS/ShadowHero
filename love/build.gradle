@@ -81,6 +81,7 @@ android {
 }
 
 dependencies {
+    testImplementation 'junit:junit:4.13.2'
     api fileTree(dir: 'libs', include: ['*.jar'])
     api 'androidx.appcompat:appcompat:1.6.1'
     api 'com.google.android.material:material:1.12.0'

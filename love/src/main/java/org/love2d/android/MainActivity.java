@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer_menu.setLooping(true);
         mediaPlayer_click = MediaPlayer.create(MainActivity.this, R.raw.click);
         mediaPlayer_lock = MediaPlayer.create(MainActivity.this, R.raw.lock);
+        migrateLegacySaves();
         init_seasons_state();
         show_wellcome_message_if_should_and_change_its_state();
     }
@@ -63,9 +64,13 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         init_seasons_state();
-        if (!mediaPlayer_menu.isPlaying()) {
-            mediaPlayer_menu.seekTo(0);
-            mediaPlayer_menu.start();
+        try {
+            if (mediaPlayer_menu != null && !mediaPlayer_menu.isPlaying()) {
+                mediaPlayer_menu.seekTo(0);
+                mediaPlayer_menu.start();
+            }
+        } catch (Exception e) {
+            System.out.println("menu sound resume failed: " + e.getMessage());
         }
     }
 
@@ -78,7 +83,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mediaPlayer_menu.pause();
+        try {
+            if (mediaPlayer_menu != null) mediaPlayer_menu.pause();
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
@@ -106,13 +114,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void playClick() {
-        mediaPlayer_click.seekTo(0);
-        mediaPlayer_click.start();
+        // شکست صدا نباید جلوی اجرای بازی را بگیرد
+        try {
+            if (mediaPlayer_click != null) {
+                mediaPlayer_click.seekTo(0);
+                mediaPlayer_click.start();
+            }
+        } catch (Exception e) {
+            System.out.println("click sound failed: " + e.getMessage());
+        }
     }
 
     private void showLockToast(String message) {
-        mediaPlayer_lock.seekTo(0);
-        mediaPlayer_lock.start();
+        try {
+            if (mediaPlayer_lock != null) {
+                mediaPlayer_lock.seekTo(0);
+                mediaPlayer_lock.start();
+            }
+        } catch (Exception e) {
+            System.out.println("lock sound failed: " + e.getMessage());
+        }
         if (toastMessage != null) toastMessage.cancel();
         toastMessage = Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT);
         toastMessage.show();
@@ -130,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     public void trainSome(View v) {
         playClick();
         mediaPlayer_menu.pause();
-        new gotoLevel(MainActivity.this, "1=train").execute();
+        gotoLevel.launch(MainActivity.this, "train");
     }
 
     public void goToPage(View v) {
@@ -305,14 +326,25 @@ public class MainActivity extends AppCompatActivity {
         if (toastMessage != null) toastMessage.cancel();
         playClick();
         mediaPlayer_menu.pause();
-        new gotoLevel(MainActivity.this, level).execute();
+        // دکمه‌ها شناسه را با پیشوند قدیمی "1=" می‌فرستند؛ فقط شناسه خالص به gotoLevel می‌رسد
+        String episodeId = level != null && level.startsWith("1=") ? level.substring(2) : level;
+        gotoLevel.launch(MainActivity.this, episodeId);
     }
 
     // ==================================================================== وضعیت قفل فصل‌ها و اپیزودها
 
+    /** انتقال یک‌باره فایل‌های ذخیره نسخه‌های قدیمی (ریشه save) به پوشه قراردادی save/archive */
+    private void migrateLegacySaves() {
+        try {
+            SavePaths.migrateLegacyFiles(new File(SplashActivity.baseDir(this)));
+        } catch (Exception e) {
+            System.out.println("Can't migrate legacy saves: " + e.getMessage());
+        }
+    }
+
     /** این تابع در onCreate/onResume/onStart برای بروزرسانی قفل‌ها و ستاره‌ها صدا زده می‌شود */
     public void init_seasons_state() {
-        File directory = new File(SplashActivity.baseDir(this), "save" + File.separator + "archive" + File.separator + "save");
+        File directory = SavePaths.archiveDir(new File(SplashActivity.baseDir(this)));
         //noinspection ResultOfMethodCallIgnored
         directory.mkdirs();
 
@@ -371,9 +403,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /** بررسی قفل بودن اپیزود از روی فایل ذخیره (منطق اصلی حفظ شده) */
+    /** بررسی قفل بودن اپیزود از روی فایل ذخیره (منطق اصلی حفظ شده، مسیر از SavePaths) */
     public boolean episode_isNotLocked(String FileName) {
-        File file = new File(SplashActivity.baseDir(this), "save" + File.separator + "archive" + File.separator + FileName);
+        File file = SavePaths.lockFile(new File(SplashActivity.baseDir(this)), FileName);
         if (file.exists()) {
             try {
                 BufferedReader brTest = new BufferedReader(new FileReader(file));
@@ -420,17 +452,17 @@ public class MainActivity extends AppCompatActivity {
         try {
             int stars = 0;
             long time = 0;
-            File file = new File(SplashActivity.baseDir(this), "save" + File.separator + "archive" + File.separator + FileName);
+            File file = SavePaths.episodeSaveFile(new File(SplashActivity.baseDir(this)), FileName.endsWith("_save.txt") ? FileName.substring(0, FileName.length() - "_save.txt".length()) : FileName);
             if (file.exists()) {
                 FileInputStream is = new FileInputStream(file);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                String line = reader.readLine(); // score
-                line = reader.readLine();        // stars
-                if (line != null) {
+                String line = reader.readLine(); // 1=score
+                line = reader.readLine();        // 2=stars
+                if (line != null && line.length() > 2 && line.startsWith("2=")) {
                     stars = Integer.parseInt(line.substring(2));
                 }
-                line = reader.readLine();        // time
-                if (line != null) {
+                line = reader.readLine();        // 3=time
+                if (line != null && line.length() > 2 && line.startsWith("3=")) {
                     time = Long.parseLong(line.substring(2));
                 }
                 reader.close();
@@ -503,7 +535,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void show_wellcome_message_if_should_and_change_its_state() {
-        File file = new File(SplashActivity.baseDir(this), "save" + File.separator + "archive" + File.separator + "wellcome_state.txt");
+        File file = new File(SavePaths.archiveDir(new File(SplashActivity.baseDir(this))), "wellcome_state.txt");
         if (file.exists()) {
             try {
                 BufferedReader brTest = new BufferedReader(new FileReader(file));
