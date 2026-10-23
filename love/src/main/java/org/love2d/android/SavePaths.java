@@ -31,8 +31,11 @@ public final class SavePaths {
     /** زیرپوشه کانونی داده‌ها؛ معادل پیشوند "archive/" در سمت Lua */
     public static final String ARCHIVE_SUBDIR = "archive";
 
-    /** شناسه‌های اپیزودهایی که واقعاً در level_chooser.lua پیاده‌سازی شده‌اند */
-    private static final Pattern VALID_EPISODE = Pattern.compile("^(train|s[1-4]e[1-3])$");
+    /**
+     * شناسه‌های اپیزودهایی که واقعاً در level_chooser.lua پیاده‌سازی شده‌اند
+     * (فصل ۳ و ۴ هنوز کامنت‌اند؛ اگر روزی فعال شدند، این الگو و تست باید همگام شوند)
+     */
+    private static final Pattern VALID_EPISODE = Pattern.compile("^(train|s[12]e[1-3])$");
 
     /** نام‌های مجاز فایل‌های قرارداد؛ جلوگیری از path traversal */
     private static final Pattern SAFE_NAME = Pattern.compile("^[A-Za-z0-9][A-Za-z0-9._-]*$");
