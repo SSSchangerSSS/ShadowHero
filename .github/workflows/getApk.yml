@@ -70,7 +70,7 @@ jobs:
       - name: Build Signed Release APK
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleNormal --no-daemon --stacktrace
+          ./gradlew assembleNormalRelease --no-daemon --stacktrace
 
       - name: Get Date
         id: date

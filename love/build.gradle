@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 android {
     namespace 'org.love2d.android'
     compileSdk 34
-    ndkVersion '26.1.10909125'
+    ndkVersion '21.3.6528147'
 
     defaultConfig {
         minSdk 26

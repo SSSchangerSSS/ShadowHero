@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     namespace 'org.love2d.android.executable'
     compileSdk 34
-    ndkVersion '26.1.10909125'
+    ndkVersion '21.3.6528147'
     defaultConfig {
         applicationId 'com.SandSprogrammingGroup.RealShadowHero'
         versionCode 5
