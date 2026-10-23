@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -73,7 +74,7 @@ public class gotoLevel extends AsyncTask<Void, Void, Boolean> {
         progressDialog.show();
         Window w = progressDialog.getWindow();
         if (w != null) {
-            w.setLayout(Window.LayoutParams.WRAP_CONTENT, Window.LayoutParams.WRAP_CONTENT);
+            w.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }
 
